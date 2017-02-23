@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.story.change.web.dao.PhoneCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.story.change.web.model.PhoneCheck" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="check" property="check" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from db_phone_check
+    where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.story.change.web.model.PhoneCheck" >
+    insert into db_phone_check (id, phone, check, 
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{check,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.story.change.web.model.PhoneCheck" >
+    insert into db_phone_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="check != null" >
+        check,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="check != null" >
+        #{check,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <insert id="saveOrUpdate" parameterType="com.story.change.web.model.PhoneCheck">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(*) FROM db_phone_check WHERE phone=#{phone,jdbcType=VARCHAR}
+    </selectKey>
+    <if test="count > 0">
+      UPDATE db_phone_check t set t.phone=#{phone,jdbcType=VARCHAR},
+      t.check=#{check,jdbcType=VARCHAR},
+      t.createTime=#{createTime,jdbcType=TIMESTAMP}
+      where t.phone=#{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="count == 0">
+      insert into db_phone_check (id, phone, check, create_time)
+      values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{check,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP})
+    </if>
+  </insert>
+</mapper>
