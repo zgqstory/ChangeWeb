@@ -9,6 +9,7 @@ import com.story.change.web.model.ResponseBase;
 import com.story.change.web.model.User;
 import com.story.change.web.service.IUserService;
 import com.story.change.web.util.StringCheckUtil;
+import com.story.change.web.util.StringFormatUtil;
 import com.story.change.web.util.StringGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,15 +97,94 @@ public class UserServiceImpl implements IUserService {
         return response;
     }
 
+    /**
+     * 手机号+密码登录
+     */
     public ResponseBase loginByPwd(String phone, String pwd) {
-        return null;
+        ResponseBase response = new ResponseBase();
+        if (StringCheckUtil.isPhone(phone)) {
+            User user = userMapper.selectByPhone(phone);
+            if (user != null) {
+                if (user.getPwd().equals(pwd)) {
+                    response.setSuccess(true);
+                    response.setMessage("登录成功");
+                    response.setBody(JSON.toJSONString(user));
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage("密码错误");
+                }
+            } else {
+                response.setSuccess(false);
+                response.setMessage("用户不存在");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("无效手机号");
+        }
+        return response;
     }
 
+    /**
+     * 手机号+验证码登录
+     */
     public ResponseBase loginByCheck(String phone, String check) {
-        return null;
+        ResponseBase response = new ResponseBase();
+        if (StringCheckUtil.isPhone(phone)) {
+            PhoneCheck phoneCheck = phoneCheckMapper.selectByPhone(phone);
+            Date date = new Date();
+            if (phoneCheck!= null && phoneCheck.getCheck().equals(check) &&
+                    date.getTime() - phoneCheck.getCreateTime().getTime() < 5*60*1000) {
+                User user = userMapper.selectByPhone(phone);
+                if (user != null) {
+                    response.setSuccess(true);
+                    response.setMessage("登录成功");
+                    response.setBody(JSON.toJSONString(user));
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage("用户不存在");
+                }
+            } else {
+                response.setSuccess(false);
+                response.setMessage("验证码错误");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("无效手机号");
+        }
+        return response;
     }
 
-    public ResponseBase setUserData(User user) {
-        return null;
+    /**
+     * 设置用户信息：type=0,用户名；type=1,密码；type=2,头像
+     */
+    public ResponseBase setUserData(String phone, String data, String pwd, int type) {
+        ResponseBase response = new ResponseBase();
+        if (StringCheckUtil.isPhone(phone)) {
+            User user = userMapper.selectByPhone(phone);
+            if (user != null) {
+                if(type == 1) {
+                    if(data == null || !user.getPwd().equals(pwd)) {
+                        response.setSuccess(false);
+                        response.setMessage("密码错误");
+                        return response;
+                    }
+                    user.setPwd(data);
+                } else if(type == 0) {
+                    user.setName(data);
+                } else if(type == 2) {
+                    user.setAvatar(data);
+                }
+                userMapper.updateByPrimaryKey(user);
+                response.setSuccess(true);
+                response.setMessage("修改成功");
+            } else {
+                response.setSuccess(false);
+                response.setMessage("用户不存在");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("无效手机号");
+        }
+        return response;
     }
 }

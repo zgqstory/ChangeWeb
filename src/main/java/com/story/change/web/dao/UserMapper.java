@@ -8,4 +8,6 @@ public interface UserMapper {
     int insertSelective(User record);
 
     User selectByPhone(String phone);
+
+    int updateByPrimaryKey(User record);
 }

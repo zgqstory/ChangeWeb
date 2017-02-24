@@ -57,4 +57,12 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKey" parameterType="com.story.change.web.model.User" >
+    update db_user
+    set phone = #{phone,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>
