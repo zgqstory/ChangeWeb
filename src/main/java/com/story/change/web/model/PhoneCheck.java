@@ -1,7 +1,6 @@
 package com.story.change.web.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class PhoneCheck implements Serializable {
     private static final long serialVersionUID = -3526435196904317720L;
@@ -11,7 +10,7 @@ public class PhoneCheck implements Serializable {
 
     private String check;
 
-    private Date createTime;
+    private String createTime;
 
     public String getId() {
         return id;
@@ -37,11 +36,11 @@ public class PhoneCheck implements Serializable {
         this.check = check == null ? null : check.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

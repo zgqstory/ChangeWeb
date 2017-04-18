@@ -20,26 +20,26 @@ public class UserController {
 
     @RequestMapping(value = "/getPhoneCheck", produces = {"text/html;charset=UTF-8;","application/json;"})
     @ResponseBody
-    public String getPhoneCheck(String phone) {
-        return JSON.toJSONString(userService.getPhoneCheck(phone));
+    public String getPhoneCheck(String userPhone) {
+        return JSON.toJSONString(userService.getPhoneCheck(userPhone));
     }
 
     @RequestMapping(value = "/register", produces={"text/html;charset=UTF-8;","application/json;"})
     @ResponseBody
-    public String doRegister(String phone, String check) {
-        return JSON.toJSONString(userService.register(phone, check));
+    public String doRegister(String userPhone, String userCheck) {
+        return JSON.toJSONString(userService.register(userPhone, userCheck));
     }
 
     @RequestMapping(value = "/loginWithCheck", produces = {"text/html;charset=UTF-8;","application/json;"})
     @ResponseBody
-    public String loginWithCheck(String phone, String check) {
-        return JSON.toJSONString(userService.loginByCheck(phone, check));
+    public String loginWithCheck(String userPhone, String userCheck) {
+        return JSON.toJSONString(userService.loginByCheck(userPhone, userCheck));
     }
 
     @RequestMapping(value = "/loginWithPwd", produces = {"text/html;charset=UTF-8;","application/json;"})
     @ResponseBody
-    public String loginWithPwd(String phone, String pwd) {
-        return JSON.toJSONString(userService.loginByPwd(phone, pwd));
+    public String loginWithPwd(String userName, String userPwd) {
+        return JSON.toJSONString(userService.loginByPwd(userName, userPwd));
     }
 
     @RequestMapping(value = "/updateUserData", produces = {"text/html;charset=UTF-8;","application/json;"})

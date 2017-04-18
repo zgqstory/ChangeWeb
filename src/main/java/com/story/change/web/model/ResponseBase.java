@@ -8,40 +8,40 @@ import java.io.Serializable;
  */
 public class ResponseBase implements Serializable {
     private static final long serialVersionUID = -7138795326699232077L;
-    private boolean success;
-    private String code;
-    private String message;
-    private String body;
+    private String rspType;
+    private String rspCode;
+    private String rspMsg;
+    private Object rspData;
 
-    public boolean isSuccess() {
-        return success;
+    public String getRspType() {
+        return rspType;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setRspType(String rspType) {
+        this.rspType = rspType;
     }
 
-    public String getCode() {
-        return code;
+    public String getRspCode() {
+        return rspCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setRspCode(String rspCode) {
+        this.rspCode = rspCode;
     }
 
-    public String getMessage() {
-        return message;
+    public String getRspMsg() {
+        return rspMsg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setRspMsg(String rspMsg) {
+        this.rspMsg = rspMsg;
     }
 
-    public String getBody() {
-        return body;
+    public Object getRspData() {
+        return rspData;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setRspData(Object rspData) {
+        this.rspData = rspData;
     }
 }
