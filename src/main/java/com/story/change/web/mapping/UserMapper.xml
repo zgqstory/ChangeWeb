@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.story.change.web.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.story.change.web.model.User" >
-    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="INTEGER" />
     <result column="user_phone" property="phone" jdbcType="VARCHAR" />
     <result column="user_avatar" property="avatar" jdbcType="VARCHAR" />
     <result column="user_name" property="name" jdbcType="VARCHAR" />
@@ -20,17 +20,17 @@
 
   <insert id="insert" useGeneratedKeys="true" parameterType="com.story.change.web.model.User" >
     insert into
-    db_user t (t.user_phone, t.user_avatar, t.user_name, t.user_pwd)
+    db_user (user_phone, user_avatar, user_name, user_pwd)
     values
     (#{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR})
   </insert>
 
-  <update id="updateByPrimaryKey" parameterType="com.story.change.web.model.User" >
+  <update id="updateByPhone" parameterType="com.story.change.web.model.User" >
     update
     db_user t
     set
-    t.user_phone = #{phone,jdbcType=VARCHAR}, t.user_avatar = #{avatar,jdbcType=VARCHAR}, t.user_name = #{name,jdbcType=VARCHAR}, t.user_pwd = #{pwd,jdbcType=VARCHAR}
+    t.user_avatar = #{avatar,jdbcType=VARCHAR}, t.user_name = #{name,jdbcType=VARCHAR}, t.user_pwd = #{pwd,jdbcType=VARCHAR}
     where
-    t.id = #{id,jdbcType=VARCHAR}
+    t.user_phone = #{phone,jdbcType=VARCHAR}
   </update>
 </mapper>

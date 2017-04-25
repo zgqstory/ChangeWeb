@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 4451953773283778379L;
-    private String id;
+    private long id;
 
     private String phone;
 
@@ -14,12 +14,12 @@ public class User implements Serializable {
 
     private String pwd;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getPhone() {

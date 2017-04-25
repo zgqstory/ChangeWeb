@@ -8,6 +8,7 @@ import com.story.change.web.model.ResponseBase;
 import com.story.change.web.model.User;
 import com.story.change.web.service.IUserService;
 import com.story.change.web.util.StringCheckUtil;
+import com.story.change.web.util.StringFormatUtil;
 import com.story.change.web.util.StringGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -187,21 +188,26 @@ public class UserServiceImpl implements IUserService {
             if (StringCheckUtil.isPhone(phone)) {
                 User user = userMapper.selectByPhone(phone);
                 if (user != null) {
-                    if(type == 1) {
-                        if(data == null || !user.getPwd().equals(pwd)) {
-                            response.setRspType("E");
-                            response.setRspMsg("密码错误");
-                            return response;
+                    if (data != null && !data.equals("")) {
+                        response.setRspType("E");
+                        response.setRspMsg("修改数据不能为空");
+                    } else {
+                        if(type == 1) {
+                            if(!user.getPwd().equals(pwd)) {
+                                response.setRspType("E");
+                                response.setRspMsg("密码错误");
+                                return response;
+                            }
+                            user.setPwd(data);
+                        } else if(type == 0) {
+                            user.setName(data);
+                        } else if(type == 2) {
+                            user.setAvatar(data);
                         }
-                        user.setPwd(data);
-                    } else if(type == 0) {
-                        user.setName(data);
-                    } else if(type == 2) {
-                        user.setAvatar(data);
+                        userMapper.updateByPhone(user);
+                        response.setRspType("N");
+                        response.setRspMsg("修改成功");
                     }
-                    userMapper.updateByPrimaryKey(user);
-                    response.setRspType("N");
-                    response.setRspMsg("修改成功");
                 } else {
                     response.setRspType("E");
                     response.setRspMsg("用户不存在");
