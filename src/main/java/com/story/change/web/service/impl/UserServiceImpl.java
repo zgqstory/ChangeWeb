@@ -8,7 +8,6 @@ import com.story.change.web.model.ResponseBase;
 import com.story.change.web.model.User;
 import com.story.change.web.service.IUserService;
 import com.story.change.web.util.StringCheckUtil;
-import com.story.change.web.util.StringFormatUtil;
 import com.story.change.web.util.StringGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +79,7 @@ public class UserServiceImpl implements IUserService {
                             user.setPwd(MD5Util.getMD5("123456"));
                             int i = userMapper.insert(user);
                             if (i > 0) {
+                                user.setPwd("");//去掉用户信息中的password
                                 response.setRspType("N");
                                 response.setRspMsg("注册成功");
                                 response.setRspData(user);
@@ -121,6 +121,7 @@ public class UserServiceImpl implements IUserService {
                 User user = userMapper.selectByPhone(phone);
                 if (user != null) {
                     if (user.getPwd().equals(pwd)) {
+                        user.setPwd("");//去掉用户信息中的password
                         response.setRspType("N");
                         response.setRspMsg("登录成功");
                         response.setRspData(user);
@@ -156,6 +157,7 @@ public class UserServiceImpl implements IUserService {
                         System.currentTimeMillis() - Long.parseLong(phoneCheck.getCreateTime()) < 5*60*1000) {
                     User user = userMapper.selectByPhone(phone);
                     if (user != null) {
+                        user.setPwd("");//去掉用户信息中的password
                         response.setRspType("N");
                         response.setRspMsg("登录成功");
                         response.setRspData(user);
@@ -188,7 +190,7 @@ public class UserServiceImpl implements IUserService {
             if (StringCheckUtil.isPhone(phone)) {
                 User user = userMapper.selectByPhone(phone);
                 if (user != null) {
-                    if (data != null && !data.equals("")) {
+                    if (data == null || data.equals("")) {
                         response.setRspType("E");
                         response.setRspMsg("修改数据不能为空");
                     } else {
@@ -205,8 +207,11 @@ public class UserServiceImpl implements IUserService {
                             user.setAvatar(data);
                         }
                         userMapper.updateByPhone(user);
+                        user = userMapper.selectByPhone(user.getPhone());
+                        user.setPwd("");//去掉用户信息中的password
                         response.setRspType("N");
                         response.setRspMsg("修改成功");
+                        response.setRspData(user);
                     }
                 } else {
                     response.setRspType("E");
